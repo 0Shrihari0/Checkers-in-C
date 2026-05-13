@@ -1,0 +1,13 @@
+{
+  "name": "checkers-web",
+  "version": "1.0.0",
+  "description": "Web-based Checkers with online multiplayer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

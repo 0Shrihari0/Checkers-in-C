@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play Checkers online with friends over LAN or against AI.">
+    <title>Checkers</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>●</text></svg>">
+</head>
+<body>
+
+    <!-- Menu -->
+    <div id="menu-screen">
+        <div class="menu-container">
+            <h1 class="menu-title">Checkers</h1>
+            <p class="menu-subtitle">Classic strategy board game</p>
+
+            <div class="menu-section">
+                <h3>Local</h3>
+                <button id="btn-pvp" class="menu-btn">
+                    <span class="btn-label">Two Players</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+
+            <div class="menu-section">
+                <h3>Online</h3>
+                <button id="btn-online" class="menu-btn">
+                    <span class="btn-label">Multiplayer</span>
+                    <span class="btn-desc">WiFi / LAN</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+
+            <div class="menu-section">
+                <h3>vs Computer</h3>
+                <button id="btn-ai-easy" class="menu-btn">
+                    <span class="btn-label">Easy</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+                <button id="btn-ai-medium" class="menu-btn">
+                    <span class="btn-label">Medium</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+                <button id="btn-ai-hard" class="menu-btn">
+                    <span class="btn-label">Hard</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game -->
+    <div id="game-screen" class="hidden">
+        <div class="game-header">
+            <div class="game-logo">Checkers</div>
+            <div class="header-controls">
+                <button id="btn-restart" class="icon-btn">Restart</button>
+                <button id="btn-new-game" class="icon-btn">Menu</button>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span id="status-text" class="status-text">Player 1's turn</span>
+        </div>
+
+        <div class="game-layout">
+            <div id="p1-panel" class="player-panel active">
+                <div class="player-indicator"></div>
+                <div id="p1-label" class="player-name">Player 1</div>
+                <div id="p1-pieces" class="player-pieces">12 pieces</div>
+                <div id="p1-score" class="score-value">60</div>
+                <div class="score-label">points</div>
+            </div>
+
+            <div class="board-wrapper">
+                <div id="board"></div>
+            </div>
+
+            <div id="p2-panel" class="player-panel">
+                <div class="player-indicator"></div>
+                <div id="p2-label" class="player-name">Player 2</div>
+                <div id="p2-pieces" class="player-pieces">12 pieces</div>
+                <div id="p2-score" class="score-value">60</div>
+                <div class="score-label">points</div>
+            </div>
+
+            <div class="history-panel">
+                <div class="history-title">Moves</div>
+                <div id="move-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over -->
+    <div id="game-over-overlay" class="hidden">
+        <div class="game-over-card">
+            <div class="game-over-title">Game Over</div>
+            <div id="game-over-message">Player 1 Wins</div>
+            <div class="final-scores">
+                <div class="final-score-item">
+                    <div class="final-score-label">Player 1</div>
+                    <div id="final-p1-score" class="final-score-value">0</div>
+                </div>
+                <div class="final-score-item">
+                    <div class="final-score-label">Player 2</div>
+                    <div id="final-p2-score" class="final-score-value">0</div>
+                </div>
+            </div>
+            <div class="game-over-actions">
+                <button class="menu-btn" onclick="UI.startGame(Game.mode, Game.aiDifficulty)">
+                    <span class="btn-label">Play Again</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+                <button class="menu-btn" onclick="UI.showMenu()">
+                    <span class="btn-label">Main Menu</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script src="ai.js"></script>
+    <script src="multiplayer.js"></script>
+    <script src="ui.js"></script>
+</body>
+</html>

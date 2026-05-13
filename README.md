@@ -1,144 +1,167 @@
-# ♟️ Checkers in C
+# Checkers in C
 
-A terminal-based implementation of the classic **Checkers** (Draughts) board game, written entirely in C. Play against a friend on the same machine in a clean command-line interface.
-
----
-
-## 📋 Table of Contents
-
-- [About](#about)
-- [Features](#features)
-- [Game Rules](#game-rules)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Compilation](#compilation)
-  - [Running the Game](#running-the-game)
-- [How to Play](#how-to-play)
-- [Contributing](#contributing)
-- [License](#license)
+A full-featured Checkers (Draughts) game with a terminal client, multiplayer server, AI opponent, and a web-based interface — all written in C and JavaScript.
 
 ---
 
-## About
+## Features
 
-This project is a fully functional Checkers game built in C and playable from the terminal. It follows standard American Checkers rules on an 8×8 board, supporting piece movement, captures (jumps), multi-jumps, and King promotion.
-
----
-
-## ✨ Features
-
-- 🎮 **Two-player local gameplay** — take turns on the same terminal
-- ♟️ **Standard 8×8 Checkers board** with 12 pieces per player
-- 👑 **King promotion** — pieces reaching the opponent's back row become Kings
-- 🔁 **Capture (jump) mechanics** — mandatory captures and multi-jump chains
-- 🖥️ **ASCII board rendering** — clean, readable board displayed after every move
-- ⚡ **Lightweight** — no external libraries required, pure C
+- **Local game** — two players on the same terminal
+- **Multiplayer server** — TCP-based server with game rooms, reconnection support, and ELO matchmaking
+- **AI opponent** — minimax with alpha-beta pruning (Easy / Medium / Hard)
+- **Web interface** — play in the browser with local, AI, or online multiplayer modes
+- **Online multiplayer** — play with a friend over WiFi/LAN via WebSocket
+- **Game history** — move replay and persistent stats via SQLite
+- Standard 8×8 board, forced captures, multi-jump chains, king promotion
 
 ---
 
-## 📜 Game Rules
+## Project Structure
 
-1. The game is played on an **8×8 board** with pieces placed on dark squares only.
-2. Each player starts with **12 pieces** on opposite sides of the board.
-3. Pieces move **diagonally forward** to an adjacent empty square.
-4. **Capturing** an opponent's piece is done by jumping over it diagonally — the landing square must be empty.
-5. **Multi-jumps** are allowed: if after a capture another jump is available with the same piece, it must be taken.
-6. When a piece reaches the **opponent's back row**, it becomes a **King** and can move both forward and backward diagonally.
-7. A player **wins** when the opponent has no pieces left or no valid moves.
-
----
-
-## 🗂️ Project Structure
-
-```text
-Checkers-in-C/
-└── Checkers/
-    ├── checkers.c
-    ├── functions.c
-    ├── functions.h
-    ├── Makefile
-    └── (other source/header files if present)
+```
+Checkers/
+├── src/                   # Local terminal game
+│   ├── main.c             # Game loop
+│   ├── game/
+│   │   ├── board.c/h      # Board state
+│   │   ├── moves.c/h      # Move execution
+│   │   └── rules.c/h      # Game rules, validation
+│   └── ui/
+│       └── terminal.c/h   # Terminal rendering, input
+│
+├── server/                # Multiplayer game server
+│   ├── server.c           # Main server loop, lobby
+│   ├── room.c/h           # Game rooms, threading
+│   ├── db.c/h             # SQLite player stats, ELO
+│   ├── ai.c/h             # AI move selection
+│   ├── history.c/h        # Game history logging
+│   └── log.h              # Server logging
+│
+├── client/                # Terminal multiplayer client
+│   └── client.c           # Network client
+│
+├── shared/                # Shared between server and client
+│   └── protocol.c/h       # Packet serialization, transport
+│
+├── web/                   # Web-based interface
+│   ├── index.html         # Main page
+│   ├── style.css          # UI styling
+│   ├── game.js            # Game engine
+│   ├── ai.js              # AI opponent
+│   ├── ui.js              # DOM rendering, interaction
+│   ├── multiplayer.js     # WebSocket client
+│   ├── server.js          # Node.js WebSocket server
+│   └── package.json       # Dependencies
+│
+└── Makefile               # Build targets
 ```
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- A C compiler such as **GCC** or **Clang**
-- A Unix/Linux/macOS terminal, or **MinGW** / **WSL** on Windows
+- **C compiler** — GCC or Clang
+- **SQLite3** — for the multiplayer server (`brew install sqlite3` on macOS)
+- **Node.js** — for the web interface (optional)
 
-### Compilation
-
-Clone the repository and compile with GCC:
+### Build
 
 ```bash
 git clone https://github.com/0Shrihari0/Checkers-in-C.git
-cd Checkers-in-C/Checkers
-gcc -Wall -std=c11 -o checkers *.c
+cd Checkers-in-C
+make all
 ```
 
-Or simply use the included Makefile:
+This builds three binaries:
 
-```bash
-make
-```
+| Binary | Description |
+|---|---|
+| `checkers` | Local 2-player terminal game |
+| `checkers_server` | Multiplayer TCP server |
+| `checkers_client` | Terminal multiplayer client |
 
-### Running the Game
+---
 
-After compilation, start the game with:
+## How to Play
+
+### 1. Local Game (terminal)
 
 ```bash
 ./checkers
 ```
 
-On Windows (MinGW):
+Two players take turns entering moves in `A1` to `H8` notation.
 
+### 2. Multiplayer (terminal)
+
+Start the server in one terminal:
 ```bash
-checkers.exe
+./checkers_server          # default port 8080
 ```
 
+Connect two clients from separate terminals:
+```bash
+./checkers_client 127.0.0.1 8080    # Player 1
+./checkers_client 127.0.0.1 8080    # Player 2
+```
+
+The server pairs players automatically.
+
+### 3. Web Interface (browser)
+
+Play in the browser with local, AI, or online multiplayer modes.
+
+**For local play / AI** — just open the file directly:
+```bash
+open web/index.html
+```
+
+**For online multiplayer over WiFi:**
+```bash
+cd web
+npm install        # one-time setup
+node server.js     # starts the server
+```
+
+The server prints your local network URL:
+```
+  ♟  Checkers Multiplayer Server
+  Local:   http://localhost:3000
+  Network: http://192.168.x.x:3000
+
+  Share the Network URL with Player 2!
+```
+
+Both players open the URL in their browsers and click **Multiplayer**.
+
 ---
 
-## 🕹️ How to Play
+## Game Rules
 
-1. The board is displayed in the terminal after each turn.
-2. Players are prompted to enter their move using **row and column coordinates**.
-3. Follow the on-screen instructions to select a piece and choose a destination.
-4. Captures are performed automatically when a valid jump is made.
-5. The game announces the **winner** when one player has no remaining pieces or moves.
+1. Played on an **8×8 board** — pieces occupy dark squares only
+2. Each player starts with **12 pieces**
+3. Pieces move **diagonally forward** one square
+4. **Captures** are mandatory — jump over an opponent's piece to an empty square
+5. **Multi-jumps** — if another capture is available after a jump, it must be taken
+6. **King promotion** — pieces reaching the opponent's back row become Kings and can move in any diagonal direction
+7. A player **wins** when the opponent has no pieces or no valid moves
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! To get started:
+## Contributing
 
 1. Fork the repository
-2. Create a new branch:
-
-```bash
-git checkout -b feature/your-feature
-```
-
-3. Commit your changes:
-
-```bash
-git commit -m "Add your feature"
-```
-
-4. Push to the branch:
-
-```bash
-git push origin feature/your-feature
-```
-
+2. Create a branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add your feature'`)
+4. Push (`git push origin feature/your-feature`)
 5. Open a Pull Request
 
 ---
 
-## 📄 License
+## License
 
 This project is open source. Feel free to use, modify, and distribute it.
+
+---
