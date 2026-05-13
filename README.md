@@ -51,11 +51,14 @@ This project is a fully functional Checkers game built in C and playable from th
 
 ## 🗂️ Project Structure
 
-```
+```text
 Checkers-in-C/
 └── Checkers/
-    ├── checkers.c      # Main game logic and board management
-    └── (other .c/.h files if present)
+    ├── checkers.c
+    ├── functions.c
+    ├── functions.h
+    ├── Makefile
+    └── (other source/header files if present)
 ```
 
 ---
@@ -74,13 +77,13 @@ Clone the repository and compile with GCC:
 ```bash
 git clone https://github.com/0Shrihari0/Checkers-in-C.git
 cd Checkers-in-C/Checkers
-gcc -o checkers checkers.c
+gcc -Wall -std=c11 -o checkers *.c
 ```
 
-Or if there are multiple source files:
+Or simply use the included Makefile:
 
 ```bash
-gcc -o checkers *.c
+make
 ```
 
 ### Running the Game
@@ -106,7 +109,6 @@ checkers.exe
 3. Follow the on-screen instructions to select a piece and choose a destination.
 4. Captures are performed automatically when a valid jump is made.
 5. The game announces the **winner** when one player has no remaining pieces or moves.
-<<<<<<< HEAD
 
 ---
 
@@ -115,9 +117,24 @@ checkers.exe
 Contributions are welcome! To get started:
 
 1. Fork the repository
-2. Create a new branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add your feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
+2. Create a new branch:
+
+```bash
+git checkout -b feature/your-feature
+```
+
+3. Commit your changes:
+
+```bash
+git commit -m "Add your feature"
+```
+
+4. Push to the branch:
+
+```bash
+git push origin feature/your-feature
+```
+
 5. Open a Pull Request
 
 ---
@@ -125,6 +142,3 @@ Contributions are welcome! To get started:
 ## 📄 License
 
 This project is open source. Feel free to use, modify, and distribute it.
-
----
-
