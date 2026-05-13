@@ -128,4 +128,3 @@ This project is open source. Feel free to use, modify, and distribute it.
 
 ---
 
-> Made with ❤️ in C by [0Shrihari0](https://github.com/0Shrihari0)
